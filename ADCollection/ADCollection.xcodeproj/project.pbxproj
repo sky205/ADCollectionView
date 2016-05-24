@@ -23,6 +23,7 @@
 		4843BAE81CF2E4F500FFEC87 /* test3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4843BAE31CF2E4F500FFEC87 /* test3.png */; };
 		4843BAE91CF2E4F500FFEC87 /* test4.png in Resources */ = {isa = PBXBuildFile; fileRef = 4843BAE41CF2E4F500FFEC87 /* test4.png */; };
 		4843BAEA1CF2E4F500FFEC87 /* test5.png in Resources */ = {isa = PBXBuildFile; fileRef = 4843BAE51CF2E4F500FFEC87 /* test5.png */; };
+		4854CB891CF3EE34003B7CEB /* ADCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4854CB881CF3EE34003B7CEB /* ADCollectionLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		4843BAE31CF2E4F500FFEC87 /* test3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = test3.png; path = ADCollection/Resources/test3.png; sourceTree = "<group>"; };
 		4843BAE41CF2E4F500FFEC87 /* test4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = test4.png; path = ADCollection/Resources/test4.png; sourceTree = "<group>"; };
 		4843BAE51CF2E4F500FFEC87 /* test5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = test5.png; path = ADCollection/Resources/test5.png; sourceTree = "<group>"; };
+		4854CB881CF3EE34003B7CEB /* ADCollectionLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ADCollectionLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				4843BAD91CF2D9E900FFEC87 /* BaseCol.swift */,
 				4843BADB1CF2DEBC00FFEC87 /* ImageCol.swift */,
 				4843BADC1CF2DEBC00FFEC87 /* ImageCol.xib */,
+				4854CB881CF3EE34003B7CEB /* ADCollectionLayout.swift */,
 			);
 			path = ADCollection;
 			sourceTree = "<group>";
@@ -192,6 +195,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4843BAD81CF2D97B00FFEC87 /* CollectionViewController.swift in Sources */,
+				4854CB891CF3EE34003B7CEB /* ADCollectionLayout.swift in Sources */,
 				4843BADA1CF2D9E900FFEC87 /* BaseCol.swift in Sources */,
 				4843BAC41CF2D2D800FFEC87 /* ViewController.swift in Sources */,
 				4843BAC21CF2D2D800FFEC87 /* AppDelegate.swift in Sources */,
@@ -348,6 +352,7 @@
 				4843BAD21CF2D2D800FFEC87 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -24,6 +24,7 @@ class ViewController: CollectionViewController {
         ];
         
         
+        
         self.addSection();
         
         for i in 0..<images.count {
@@ -33,6 +34,7 @@ class ViewController: CollectionViewController {
             self.addCellDataOfSection(data, section: 0);
         }
         
+        self.collectionView.collectionViewLayout = ADCollectionLayout();
         self.collectionView.delegate = self;
         self.collectionView.dataSource = self;
         

@@ -8,8 +8,6 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
-
 class CollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     
@@ -107,14 +105,13 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        print("sizeForItemAtIndexPath: \(indexPath)");
         if let cellData = self.getCellData(indexPath) {
             let size = CGSize(width: cellData.width, height: cellData.height);
             return size;
         }
         return CGSizeZero;
     }
-    
-    
     
     
     
