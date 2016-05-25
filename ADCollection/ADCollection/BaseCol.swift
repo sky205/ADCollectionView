@@ -10,7 +10,7 @@ import UIKit
 
 class BaseCol: UICollectionViewCell {
     
-    
+    var indexPath: NSIndexPath!
     
     func setContent(info: AnyObject) {
         

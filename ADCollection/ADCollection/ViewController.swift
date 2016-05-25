@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: CollectionViewController {
+class ViewController: CollectionViewController, ADCollectionLayoutDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +34,10 @@ class ViewController: CollectionViewController {
             self.addCellDataOfSection(data, section: 0);
         }
         
-        self.collectionView.collectionViewLayout = ADCollectionLayout();
+        let layout = ADCollectionLayout();
+        layout.delegate = self;
+        
+        self.collectionView.collectionViewLayout = layout;
         self.collectionView.delegate = self;
         self.collectionView.dataSource = self;
         
@@ -49,6 +52,47 @@ class ViewController: CollectionViewController {
         self.collectionView.reloadData();
         
     }
+    
+    
+    //MARK: ADCollectionLayoutDelegate
+    func numberOfSections() -> Int {
+        return 1;
+    }
+    
+    func collectionViewLayout(layout: UICollectionViewLayout, numberOfRowsInSection section: Int) -> Int {
+        return self.cells[0].count;
+    }
+    
+    func collectionLayout(layout: UICollectionViewLayout, itemSizeOfSection section: Int) -> CGSize {
+        switch(section) {
+        case 0:
+            return CGSize(width: 100, height: 100);
+            
+        case 1:
+            return CGSize(width: self.collectionView.frame.width, height: 100);
+        
+        default:
+            return CGSizeZero;
+        }
+        
+    }
+    
+    func collectionLayout(layout: UICollectionViewLayout, itemZoomOfIndexPath index: NSIndexPath) -> CGSize {
+        
+        
+        return CGSize(width: 2, height: (index.row+1) % 2 == 0 ? 4 : 2 );
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
 

@@ -93,6 +93,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         let cellData = self.getCellData(indexPath)!;
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellData.identify, forIndexPath: indexPath)
         if let col = cell as? BaseCol {
+            col.indexPath = indexPath;
             col.setContent(cellData.data);
         }
     

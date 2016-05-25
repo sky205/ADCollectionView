@@ -11,6 +11,7 @@ import UIKit
 class ImageCol: BaseCol {
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var textLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,6 +22,7 @@ class ImageCol: BaseCol {
         
         if let data = info as? ImageColData {
             self.imageView.image = data.image;
+            self.textLabel.text = "{\(indexPath.section), \(indexPath.row)}";
         }
     }
     
