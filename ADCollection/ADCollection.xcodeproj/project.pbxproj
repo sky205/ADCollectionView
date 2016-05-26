@@ -24,6 +24,8 @@
 		4843BAE91CF2E4F500FFEC87 /* test4.png in Resources */ = {isa = PBXBuildFile; fileRef = 4843BAE41CF2E4F500FFEC87 /* test4.png */; };
 		4843BAEA1CF2E4F500FFEC87 /* test5.png in Resources */ = {isa = PBXBuildFile; fileRef = 4843BAE51CF2E4F500FFEC87 /* test5.png */; };
 		4854CB891CF3EE34003B7CEB /* ADCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4854CB881CF3EE34003B7CEB /* ADCollectionLayout.swift */; };
+		489620C91CF69FB10098A3EF /* TitleCol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489620C81CF69FB10098A3EF /* TitleCol.swift */; };
+		489620CB1CF69FBB0098A3EF /* TtileCol.xib in Resources */ = {isa = PBXBuildFile; fileRef = 489620CA1CF69FBB0098A3EF /* TtileCol.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		4843BAE41CF2E4F500FFEC87 /* test4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = test4.png; path = ADCollection/Resources/test4.png; sourceTree = "<group>"; };
 		4843BAE51CF2E4F500FFEC87 /* test5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = test5.png; path = ADCollection/Resources/test5.png; sourceTree = "<group>"; };
 		4854CB881CF3EE34003B7CEB /* ADCollectionLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ADCollectionLayout.swift; sourceTree = "<group>"; };
+		489620C81CF69FB10098A3EF /* TitleCol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleCol.swift; sourceTree = "<group>"; };
+		489620CA1CF69FBB0098A3EF /* TtileCol.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TtileCol.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +96,8 @@
 				4843BADB1CF2DEBC00FFEC87 /* ImageCol.swift */,
 				4843BADC1CF2DEBC00FFEC87 /* ImageCol.xib */,
 				4854CB881CF3EE34003B7CEB /* ADCollectionLayout.swift */,
+				489620C81CF69FB10098A3EF /* TitleCol.swift */,
+				489620CA1CF69FBB0098A3EF /* TtileCol.xib */,
 			);
 			path = ADCollection;
 			sourceTree = "<group>";
@@ -182,6 +188,7 @@
 				4843BAEA1CF2E4F500FFEC87 /* test5.png in Resources */,
 				4843BAD61CF2D34E00FFEC87 /* MenuCol.xib in Resources */,
 				4843BAE61CF2E4F500FFEC87 /* test1.png in Resources */,
+				489620CB1CF69FBB0098A3EF /* TtileCol.xib in Resources */,
 				4843BAE81CF2E4F500FFEC87 /* test3.png in Resources */,
 				4843BAE91CF2E4F500FFEC87 /* test4.png in Resources */,
 			);
@@ -195,6 +202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4843BAD81CF2D97B00FFEC87 /* CollectionViewController.swift in Sources */,
+				489620C91CF69FB10098A3EF /* TitleCol.swift in Sources */,
 				4854CB891CF3EE34003B7CEB /* ADCollectionLayout.swift in Sources */,
 				4843BADA1CF2D9E900FFEC87 /* BaseCol.swift in Sources */,
 				4843BAC41CF2D2D800FFEC87 /* ViewController.swift in Sources */,

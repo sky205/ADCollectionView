@@ -10,14 +10,22 @@ import UIKit
 
 protocol ADCollectionLayoutDelegate {
     
-    func numberOfSections() -> Int;
-    func collectionViewLayout(layout: UICollectionViewLayout, numberOfRowsInSection section: Int) -> Int;
-    
+    func collectionLayout(layout: UICollectionViewLayout, spaceOfSection section: Int) -> CollectionSpace;
     func collectionLayout(layout: UICollectionViewLayout, itemSizeOfSection section: Int) -> CGSize;
     func collectionLayout(layout: UICollectionViewLayout, itemZoomOfIndexPath index: NSIndexPath) -> CGSize;
     
 }
 
+
+class CollectionSpace {
+    
+    let itemSpace, lineSpace: CGFloat;
+    init(itemSpace: CGFloat, lineSpace: CGFloat) {
+        self.itemSpace = itemSpace;
+        self.lineSpace = lineSpace;
+    }
+    
+}
 
 
 class ADCollectionLayout: UICollectionViewLayout {
@@ -38,10 +46,20 @@ class ADCollectionLayout: UICollectionViewLayout {
     var maxW: Int!;
     
     var nowOriginY: CGFloat = 0;
+    var maxOriginY: CGFloat = 0;
+    
+    
+    var cacheData = [NSIndexPath: UICollectionViewLayoutAttributes]();
     
     
     override func prepareLayout() {
         super.prepareLayout();
+        
+        print("prepareLayout");
+        
+        self.maxOriginY = 0;
+        self.nowOriginY = 0;
+        self.cacheData.removeAll(keepCapacity: false);
         
         let sections = self.collectionView!.numberOfSections();
         for i in 0..<sections {
@@ -50,49 +68,88 @@ class ADCollectionLayout: UICollectionViewLayout {
     }
     
     override func collectionViewContentSize() -> CGSize {
-        print("collectionViewContentSize");
+        //print("collectionViewContentSize");
         return self.contentSize == CGSizeZero ? self.collectionView!.frame.size : self.contentSize;
         
     }
     
     override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
         
+        if let attribute = self.cacheData[indexPath]  {
+            return attribute;
+        }
+        
         let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath);
         let itemZoom = self.delegate!.collectionLayout(self, itemZoomOfIndexPath: indexPath);
         let rect = self.calculatePoint(itemSize, zoom: itemZoom);
         attributes.frame = rect;
         
+        self.cacheData[indexPath] = attributes;
+        
         return attributes;
     }
     
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        print("layoutAttributesForElementsInRect");
+        //print("layoutAttributesForElementsInRect");
         var attributes = [UICollectionViewLayoutAttributes]();
         
-        for i in 0..<self.cells.count {
+        
+        
+        
+        for section in 0..<self.cells.count {
+            
+            
+            
+            // value setting
+            self.setItemSize(withSection: section);
+            self.setSpaceOfItem(withSection: section);
+            self.setMaxW(withSection: section);
             
             //initial
             self.lastRow = 0;
-            self.itemSize = self.delegate!.collectionLayout(self, itemSizeOfSection: i);
-            self.maxW = Int(self.collectionView!.frame.width / (itemSize.width + self.itemSpace));
             self.grid.removeAll(keepCapacity: false);
             self.createFullRow(withMaxWidth: self.maxW);
             
-            for j in 0..<self.cells[i]! {
-                
-                let attribute = self.layoutAttributesForItemAtIndexPath(NSIndexPath(forRow: j, inSection: i))!;
+            
+            for row in 0..<self.cells[section]! {
+                let attribute = self.layoutAttributesForItemAtIndexPath(NSIndexPath(forRow: row, inSection: section))!;
                 attributes.append(attribute);
+                
+                //計算最低點.
+                let maxY = attribute.frame.origin.y + attribute.frame.height;
+                self.maxOriginY = self.maxOriginY > maxY ? self.maxOriginY : maxY;
+                
             }
             
-            print(grid);
+            self.nowOriginY = self.maxOriginY;
+            ////print(grid);
             
         }
         
+        
+        self.contentSize.height = self.nowOriginY;
         
         
         return attributes;
         
     }
+    
+    
+    func setItemSize(withSection section: Int) {
+        self.itemSize = self.delegate!.collectionLayout(self, itemSizeOfSection: section);
+    }
+    
+    func setSpaceOfItem(withSection section: Int) {
+        let space = self.delegate!.collectionLayout(self, spaceOfSection: section);
+        self.itemSpace = space.itemSpace;
+        self.lineSpace = space.lineSpace;
+    }
+    
+    func setMaxW(withSection section: Int){
+        self.maxW = Int(self.collectionView!.frame.width / (itemSize.width + self.itemSpace));
+        self.maxW = self.maxW > 0 ? self.maxW : 1;
+    }
+    
     
     
     var lastRow = 0;
@@ -120,10 +177,13 @@ class ADCollectionLayout: UICollectionViewLayout {
             }
         }
         
+        
         self.createFullRow(withMaxWidth: self.maxW);
         let fillPoint = CGPoint(x: 0, y: self.grid.count-1);
-        self.createHeightSpaceIfNeeded(self.grid.count-1, zoomH: zoomHeight);
-        self.fillGridSpaceWithItem(fillPoint, zoom: zoom)
+        
+        //如果寬超出邊界， 幫他建立額外範圍.
+        self.createSpaceIfNeeded(self.grid.count-1, zoom: zoom);
+        self.fillGridSpaceWithItem(fillPoint, zoom: zoom);
         self.lastRow += 1;
         
         let rect = self.calculateRect(fillPoint, itemSize: itemSize, zoom: zoom);
@@ -131,7 +191,6 @@ class ADCollectionLayout: UICollectionViewLayout {
         
         
     }
-    
     
     func createHeightSpaceIfNeeded(pointY: Int, zoomH: Int){
         
@@ -141,7 +200,24 @@ class ADCollectionLayout: UICollectionViewLayout {
             for _ in 0..<needH {
                 self.createFullRow(withMaxWidth: self.maxW);
             }
-            print("create height space to:\(self.grid.count)");
+            //print("create height space to:\(self.grid.count)");
+        }
+        
+    }
+    
+    func createSpaceIfNeeded(pointY: Int, zoom: CGSize){
+        let zHeight = Int(zoom.height);
+        let zWidth = Int(zoom.width);
+        let needW = zWidth - self.maxW;
+        
+        self.createHeightSpaceIfNeeded(pointY, zoomH: zHeight);
+        
+        if needW > 0 {
+            for i in pointY..<pointY+zHeight {
+                for _ in 0..<needW {
+                    self.grid[i].append(false);
+                }
+            }
         }
         
     }
@@ -161,21 +237,24 @@ class ADCollectionLayout: UICollectionViewLayout {
         
     }
     
-    
     func calculateRect(point: CGPoint, itemSize: CGSize, zoom: CGSize) -> CGRect {
         
-        print("item point:(x:\(point.x), y:\(point.y))");
+        
         
         let width = ((itemSize.width+self.itemSpace) * zoom.width) - self.itemSpace;
         let height = ((itemSize.height+self.lineSpace) * zoom.height) - self.lineSpace;
         
         let originX = ((itemSize.width+itemSpace) * point.x);
-        let originY = ((itemSize.height+lineSpace) * point.y);
+        let originY = ((itemSize.height+lineSpace) * point.y) + self.nowOriginY;
         
         let rect = CGRectMake(originX, originY, width, height);
+        
+        //print("item point:(x:\(point.x), y:\(point.y)), origin y:\(originY)");
+        
+        //計算最低點位置. 用於section之間的區隔
+        
         return rect;
     }
-    
     
     
     func createFullRow(withMaxWidth maxW: Int) {

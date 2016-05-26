@@ -14,6 +14,7 @@ class ViewController: CollectionViewController, ADCollectionLayoutDelegate {
         super.viewDidLoad()
         
         self.registerNib("ImageCol", identify: "imgCol");
+        self.registerNib("TtileCol", identify: "titleCol");
         
         let images = [
             "test1.png",
@@ -24,15 +25,33 @@ class ViewController: CollectionViewController, ADCollectionLayoutDelegate {
         ];
         
         
+        self.addSection();
+        self.addCellDataOfSection(CellData(identify: "titleCol", data: "test2"), section: 0);
+        
+        
         
         self.addSection();
-        
         for i in 0..<images.count {
             let img = UIImage(named: images[i])!;
             let height: CGFloat = i % 2 == 0 ? 200 : 100;
             let data = CellData(identify: "imgCol", data: ImageColData(image: img), height: height, width: (self.view.frame.width-16) / 2);
-            self.addCellDataOfSection(data, section: 0);
+            self.addCellDataOfSection(data, section: 1);
         }
+        
+        
+        self.addSection()
+        self.addCellDataOfSection(CellData(identify: "titleCol", data: "test2"), section: 2);
+        
+        self.addSection();
+        for i in (0..<images.count).reverse() {
+            let img = UIImage(named: images[i])!;
+            let height: CGFloat = i % 2 == 0 ? 200 : 100;
+            let data = CellData(identify: "imgCol", data: ImageColData(image: img), height: height, width: (self.view.frame.width-16) / 2);
+            self.addCellDataOfSection(data, section: 3);
+        }
+        
+        
+        
         
         let layout = ADCollectionLayout();
         layout.delegate = self;
@@ -45,7 +64,6 @@ class ViewController: CollectionViewController, ADCollectionLayoutDelegate {
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated);
         
@@ -55,20 +73,31 @@ class ViewController: CollectionViewController, ADCollectionLayoutDelegate {
     
     
     //MARK: ADCollectionLayoutDelegate
-    func numberOfSections() -> Int {
-        return 1;
-    }
-    
-    func collectionViewLayout(layout: UICollectionViewLayout, numberOfRowsInSection section: Int) -> Int {
-        return self.cells[0].count;
+    func collectionLayout(layout: UICollectionViewLayout, spaceOfSection section: Int) -> CollectionSpace {
+        switch(section) {
+        case 0, 2:
+            return CollectionSpace(itemSpace: 0, lineSpace: 8);
+            
+        case 1:
+            return CollectionSpace(itemSpace: 8, lineSpace: 8);
+            
+        case 2:
+            return CollectionSpace(itemSpace: 0, lineSpace: 8);
+            
+        default:
+            return CollectionSpace(itemSpace: 0, lineSpace: 8);
+        }
     }
     
     func collectionLayout(layout: UICollectionViewLayout, itemSizeOfSection section: Int) -> CGSize {
         switch(section) {
-        case 0:
-            return CGSize(width: 100, height: 100);
+        case 0, 2:
+            return CGSize(width: self.collectionView.frame.width, height: 30);
             
         case 1:
+            return CGSize(width: (self.collectionView.frame.width-16) / 2  , height: 100);
+            
+        case 3:
             return CGSize(width: self.collectionView.frame.width, height: 100);
         
         default:
@@ -79,8 +108,15 @@ class ViewController: CollectionViewController, ADCollectionLayoutDelegate {
     
     func collectionLayout(layout: UICollectionViewLayout, itemZoomOfIndexPath index: NSIndexPath) -> CGSize {
         
+        switch(index.section) {
+        case 1:
+            return CGSize(width: 1, height: (index.row+3) % 3 == 0 ? 2 : 1 );
+            
+            
+        default:
+            return CGSize(width: 1, height: 1);
+        }
         
-        return CGSize(width: 2, height: (index.row+1) % 2 == 0 ? 4 : 2 );
     }
     
     
